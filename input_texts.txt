@@ -1,0 +1,4 @@
+Привет, как дела?
+Hello, how are you?
+Это тестовый пример.
+This is a test example.

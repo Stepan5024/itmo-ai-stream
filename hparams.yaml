@@ -1,0 +1,32 @@
+config:
+  accumulate_grad_batches: 3
+  arch:
+    args:
+      model_name: BertForSequenceClassification
+      model_type: bert-base-uncased
+      num_classes: 6
+      tokenizer_name: BertTokenizer
+    type: BERT
+  batch_size: 5
+  dataset:
+    args:
+      add_test_labels: false
+      classes:
+      - toxicity
+      - severe_toxicity
+      - obscene
+      - threat
+      - insult
+      - identity_attack
+      test_csv_file: jigsaw_data/jigsaw-toxic-comment-classification-challenge/val.csv
+      train_csv_file: jigsaw_data/jigsaw-toxic-comment-classification-challenge/train_split.csv
+    type: JigsawDataOriginal
+  loss: binary_cross_entropy
+  n_gpu: 1
+  name: Jigsaw_BERT
+  optimizer:
+    args:
+      amsgrad: true
+      lr: 3.0e-05
+      weight_decay: 3.0e-06
+    type: Adam
