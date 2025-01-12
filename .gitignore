@@ -163,3 +163,10 @@ cython_debug/
 #.idea/
 *.ckpt
 jigsaw-toxic-comment-train-google-ru-cleaned.csv
+.env
+cleaned_comments.db
+combined_toxicity_data.csv
+final_combined_toxicity_data.csv
+jigsaw-unintended-bias-train_ru_clean.csv
+russian-language-toxic-comments.csv
+jigsaw-toxic-comment-train.csv
