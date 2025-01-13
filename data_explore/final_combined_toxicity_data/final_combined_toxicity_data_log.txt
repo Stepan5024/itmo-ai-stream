@@ -1,0 +1,22 @@
+2025-01-13 18:44:53,760 - Loaded CSV file: final_combined_toxicity_data.csv
+2025-01-13 18:44:53,761 - Initial data shape: (3942562, 8)
+2025-01-13 18:44:53,761 - Initial data columns: ['id', 'comment_text', 'toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
+2025-01-13 18:44:53,796 - First 5 rows:
+      id                                       comment_text    toxic  ...  threat   insult  identity_hate
+0  59848  This is so cool. It's like, 'would you want yo...  0.00000  ...     0.0  0.00000       0.000000
+1  59849  Thank you!! This would make my life a lot less...  0.00000  ...     0.0  0.00000       0.000000
+2  59852  This is such an urgent design problem; kudos t...  0.00000  ...     0.0  0.00000       0.000000
+3  59855  Is this something I'll be able to install on m...  0.00000  ...     0.0  0.00000       0.000000
+4  59856               haha you guys are a bunch of losers.  0.87234  ...     0.0  0.87234       0.021277
+
+[5 rows x 8 columns]
+2025-01-13 18:45:00,834 - Applied binary transformation to toxicity columns.
+2025-01-13 18:45:00,923 - Data after binary transformation:
+   toxic  severe_toxic  obscene  threat  insult  identity_hate
+0      0             0        0       0       0              0
+1      0             0        0       0       0              0
+2      0             0        0       0       0              0
+3      0             0        0       0       0              0
+4      1             0        0       0       1              0
+2025-01-13 18:45:04,241 - Removed 55985 duplicate rows based on 'comment_text'.
+2025-01-13 18:45:04,242 - Data shape after removing duplicates: (3886577, 8)
