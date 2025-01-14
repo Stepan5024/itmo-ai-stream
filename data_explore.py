@@ -116,67 +116,92 @@ def is_special_or_numeric(text):
     """
     return bool(re.match(r'^[\W\d_]+$', text))
 
+# Функция для сохранения данных в базу данных
+def save_to_db(df, table_name="cleaned_comments"):
+    """
+    Функция для сохранения данных в базу данных.
+    """
+    engine = create_engine("sqlite:///ai-stream.db")
+    df.to_sql(table_name, engine, if_exists="replace", index=False)
+    logging.info(f'Data saved to database table: {table_name}')
+
+
 # Функция для сохранения графиков
 def save_plots(df, output_folder, csv_name):
     """
     Функция для сохранения графиков.
     """
     # Изучение длины комментариев
-    df['comment_length'] = df['comment_text'].apply(len)
-    plt.figure(figsize=(10, 6))
-    sns.histplot(df['comment_length'], bins=50)
-    plt.title('Распределение длины комментариев')
-    plt.savefig(os.path.join(output_folder, f'{csv_name}_comment_length.png'))
-    plt.close()
-    logging.info(f"Comment length statistics:\n{df['comment_length'].describe()}")
+    try:
+        df['comment_length'] = df['comment_text'].apply(len)
+        plt.figure(figsize=(10, 6))
+        sns.histplot(df['comment_length'], bins=50)
+        plt.title('Распределение длины комментариев')
+        plt.savefig(os.path.join(output_folder, f'{csv_name}_comment_length.png'))
+        plt.close()
+        logging.info(f"Comment length statistics:\n{df['comment_length'].describe()}")
+    except Exception as e:
+        logging.error(f"Error generating comment length plot: {e}")
 
     # Распределение количества меток на один комментарий
-    labels = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
-    df['num_labels'] = df[labels].sum(axis=1)
-    plt.figure(figsize=(10, 6))
-    sns.countplot(x='num_labels', data=df)
-    plt.title('Количество меток на один комментарий')
-    plt.savefig(os.path.join(output_folder, f'{csv_name}_num_labels.png'))
-    plt.close()
-    logging.info(f"Label distribution:\n{df['num_labels'].value_counts().sort_index()}")
+    try:
+        labels = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
+        df['num_labels'] = df[labels].sum(axis=1)
+        plt.figure(figsize=(10, 6))
+        sns.countplot(x='num_labels', data=df)
+        plt.title('Количество меток на один комментарий')
+        plt.savefig(os.path.join(output_folder, f'{csv_name}_num_labels.png'))
+        plt.close()
+        logging.info(f"Label distribution:\n{df['num_labels'].value_counts().sort_index()}")
+    except Exception as e:
+        logging.error(f"Error generating num_labels plot: {e}")
 
     # Распределение для любого типа токсичности
-    df['any_toxic'] = df[labels].max(axis=1)
-    plt.figure(figsize=(8, 6))
-    ax = sns.countplot(x='any_toxic', data=df)
-    plt.title('Распределение для любого типа токсичности (any_toxic)')
-    for p in ax.patches:
-        height = p.get_height()
-        percentage = (height / len(df)) * 100
-        ax.text(p.get_x() + p.get_width() / 2., height + 0.1, f'{percentage:.1f}%', ha='center')
-    plt.savefig(os.path.join(output_folder, f'{csv_name}_any_toxic.png'))
-    plt.close()
-    logging.info(f"Any toxic distribution:\n{df['any_toxic'].value_counts()}")
+    try:
+        df['any_toxic'] = df[labels].max(axis=1)
+        plt.figure(figsize=(8, 6))
+        ax = sns.countplot(x='any_toxic', data=df)
+        plt.title('Распределение для любого типа токсичности (any_toxic)')
+        for p in ax.patches:
+            height = p.get_height()
+            percentage = (height / len(df)) * 100
+            ax.text(p.get_x() + p.get_width() / 2., height + 0.1, f'{percentage:.1f}%', ha='center')
+        plt.savefig(os.path.join(output_folder, f'{csv_name}_any_toxic.png'))
+        plt.close()
+        logging.info(f"Any toxic distribution:\n{df['any_toxic'].value_counts()}")
+    except Exception as e:
+        logging.error(f"Error generating any_toxic plot: {e}")
 
     # Облако слов для токсичных и нетоксичных комментариев
-    toxic_text = ' '.join(df[df['toxic'] == 1]['comment_text'])
-    non_toxic_text = ' '.join(df[df['toxic'] == 0]['comment_text'])
-    generate_wordcloud(toxic_text, 'Облако слов для токсичных комментариев', os.path.join(output_folder, f'{csv_name}_toxic_wordcloud.png'))
-    generate_wordcloud(non_toxic_text, 'Облако слов для нетоксичных комментариев', os.path.join(output_folder, f'{csv_name}_non_toxic_wordcloud.png'))
-    logging.info(f"Top 10 words in toxic comments:\n{Counter(toxic_text.split()).most_common(10)}")
-    logging.info(f"Top 10 words in non-toxic comments:\n{Counter(non_toxic_text.split()).most_common(10)}")
+    try:
+        toxic_text = ' '.join(df[df['toxic'] == 1]['comment_text'])
+        non_toxic_text = ' '.join(df[df['toxic'] == 0]['comment_text'])
+        generate_wordcloud(toxic_text, 'Облако слов для токсичных комментариев', os.path.join(output_folder, f'{csv_name}_toxic_wordcloud.png'))
+        generate_wordcloud(non_toxic_text, 'Облако слов для нетоксичных комментариев', os.path.join(output_folder, f'{csv_name}_non_toxic_wordcloud.png'))
+        logging.info(f"Top 10 words in toxic comments:\n{Counter(toxic_text.split()).most_common(10)}")
+        logging.info(f"Top 10 words in non-toxic comments:\n{Counter(non_toxic_text.split()).most_common(10)}")
+    except Exception as e:
+        logging.error(f"Error generating wordclouds: {e}")
 
     # Распределение меток
-    label_counts = df[labels].sum()
-    label_percentages = df[labels].mean() * 100
-    plt.figure(figsize=(10, 6))
-    ax = sns.barplot(x=label_counts.index, y=label_counts.values, palette='viridis')
-    plt.title('Распределение меток')
-    plt.ylabel('Количество комментариев')
-    plt.xlabel('Метки')
-    plt.xticks(rotation=45)
-    for p in ax.patches:
-        height = p.get_height()
-        ax.text(p.get_x() + p.get_width() / 2., height + 0.1, f'{height / len(df) * 100:.1f}%', ha='center')
-    plt.savefig(os.path.join(output_folder, f'{csv_name}_label_distribution.png'))
-    plt.close()
-    logging.info(f"Label counts:\n{label_counts}")
-    logging.info(f"Label percentages:\n{label_percentages}")
+    try:
+        label_counts = df[labels].sum()
+        label_percentages = df[labels].mean() * 100
+        plt.figure(figsize=(10, 6))
+        ax = sns.barplot(x=label_counts.index, y=label_counts.values, hue=label_counts.index, palette='viridis', legend=False)
+        plt.title('Распределение меток')
+        plt.ylabel('Количество комментариев')
+        plt.xlabel('Метки')
+        plt.xticks(rotation=45)
+        for p in ax.patches:
+            height = p.get_height()
+            ax.text(p.get_x() + p.get_width() / 2., height + 0.1, f'{height / len(df) * 100:.1f}%', ha='center')
+        plt.savefig(os.path.join(output_folder, f'{csv_name}_label_distribution.png'))
+        plt.close()
+        logging.info(f"Label counts:\n{label_counts}")
+        logging.info(f"Label percentages:\n{label_percentages}")
+    except Exception as e:
+        logging.error(f"Error generating label distribution plot: {e}")
 
 # Функция для генерации облака слов
 def generate_wordcloud(text, title, save_path):
@@ -216,15 +241,13 @@ def process_csv(file_path, root_folder):
     df = preprocess_data(df)
     logging.info('Data preprocessing completed.')
 
+    # Сохранение данных в базу данных перед построением графиков
+    save_to_db(df)
+    logging.info('Data saved to database.')
+
     # Сохранение графиков
     save_plots(df, output_folder, csv_name)
     logging.info('Plots saved.')
-
-    # Сохранение данных в базу данных
-    engine = create_engine("sqlite:///ai-stream.db")
-    table_name = "cleaned_comments"
-    df.to_sql(table_name, engine, if_exists="replace", index=False)
-    logging.info(f'Data saved to database table: {table_name}')
 
 # Основная функция
 def main(csv_files, root_folder='data_explore'):

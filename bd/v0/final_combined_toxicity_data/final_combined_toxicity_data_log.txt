@@ -1,0 +1,86 @@
+2025-01-13 18:44:53,760 - Loaded CSV file: final_combined_toxicity_data.csv
+2025-01-13 18:44:53,761 - Initial data shape: (3942562, 8)
+2025-01-13 18:44:53,761 - Initial data columns: ['id', 'comment_text', 'toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
+2025-01-13 18:44:53,796 - First 5 rows:
+      id                                       comment_text    toxic  ...  threat   insult  identity_hate
+0  59848  This is so cool. It's like, 'would you want yo...  0.00000  ...     0.0  0.00000       0.000000
+1  59849  Thank you!! This would make my life a lot less...  0.00000  ...     0.0  0.00000       0.000000
+2  59852  This is such an urgent design problem; kudos t...  0.00000  ...     0.0  0.00000       0.000000
+3  59855  Is this something I'll be able to install on m...  0.00000  ...     0.0  0.00000       0.000000
+4  59856               haha you guys are a bunch of losers.  0.87234  ...     0.0  0.87234       0.021277
+
+[5 rows x 8 columns]
+2025-01-13 18:45:00,834 - Applied binary transformation to toxicity columns.
+2025-01-13 18:45:00,923 - Data after binary transformation:
+   toxic  severe_toxic  obscene  threat  insult  identity_hate
+0      0             0        0       0       0              0
+1      0             0        0       0       0              0
+2      0             0        0       0       0              0
+3      0             0        0       0       0              0
+4      1             0        0       0       1              0
+2025-01-13 18:45:04,241 - Removed 55985 duplicate rows based on 'comment_text'.
+2025-01-13 18:45:04,242 - Data shape after removing duplicates: (3886577, 8)
+2025-01-13 23:20:30,722 - Text preprocessing completed.
+2025-01-13 23:20:30,725 - Sample preprocessed text:
+0    this is so cool its like would you want your m...
+1    thank you this would make my life a lot less a...
+2    this is such an urgent design problem kudos to...
+3    is this something ill be able to install on my...
+4                  haha you guys are a bunch of losers
+Name: comment_text, dtype: object
+2025-01-13 23:20:34,236 - Removed 263 rows with special characters or numeric-only comments.
+2025-01-13 23:20:34,236 - Data shape after removing special/numeric comments: (3886314, 8)
+2025-01-13 23:20:36,362 - Removed 1508 rows with short comments (length < 2).
+2025-01-13 23:20:36,363 - Data shape after removing short comments: (3884806, 8)
+2025-01-13 23:20:39,666 - Data preprocessing completed.
+2025-01-13 23:20:44,307 - Comment length statistics:
+count    3.884806e+06
+mean     2.675610e+02
+std      2.630549e+02
+min      2.000000e+00
+25%      8.200000e+01
+50%      1.770000e+02
+75%      3.670000e+02
+max      8.095000e+03
+Name: comment_length, dtype: float64
+2025-01-13 23:20:47,851 - Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2025-01-13 23:20:49,636 - Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2025-01-13 23:20:50,424 - Label distribution:
+num_labels
+0    3741331
+1      23632
+2     110746
+3       7885
+4       1071
+5        134
+6          7
+Name: count, dtype: int64
+2025-01-13 23:20:53,458 - Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2025-01-13 23:20:55,055 - Using categorical units to plot a list of strings that are all parsable as floats or dates. If these strings should be plotted as numbers, cast to the appropriate data type before plotting.
+2025-01-13 23:20:55,813 - Any toxic distribution:
+any_toxic
+0    3741331
+1     143475
+Name: count, dtype: int64
+2025-01-13 23:21:04,968 - Top 10 words in toxic comments:
+[('the', 96154), ('to', 56109), ('and', 54723), ('a', 51476), ('это', 45235), ('of', 43097), ('is', 39586), ('you', 34147), ('that', 27447), ('in', 26169)]
+2025-01-13 23:21:59,848 - Top 10 words in non-toxic comments:
+[('the', 4634042), ('to', 2590650), ('and', 2205922), ('of', 2003093), ('a', 1916207), ('is', 1479578), ('это', 1454113), ('in', 1362871), ('that', 1273198), ('for', 932637)]
+2025-01-13 23:22:00,366 - Label counts:
+toxic            130870
+severe_toxic       1954
+obscene           21009
+threat             3616
+insult           107872
+identity_hate      8454
+dtype: int64
+2025-01-13 23:22:00,367 - Label percentages:
+toxic            3.368765
+severe_toxic     0.050299
+obscene          0.540799
+threat           0.093081
+insult           2.776767
+identity_hate    0.217617
+dtype: float64
+2025-01-13 23:22:00,646 - Plots saved.
+2025-01-13 23:22:57,290 - Data saved to database table: cleaned_comments

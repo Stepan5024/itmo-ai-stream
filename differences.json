@@ -1,0 +1,50 @@
+{
+    "document.header": {
+        "original": "Договор поставки №12345",
+        "copy": "Договор поставки №54321"
+    },
+    "document.dates.delivery_date": {
+        "original": "2023-10-15",
+        "copy": "2023-10-20"
+    },
+    "document.dates.payment_due_date": {
+        "original": "2023-10-20",
+        "copy": "2023-10-25"
+    },
+    "document.amounts.total_amount": {
+        "original": 150000.0,
+        "copy": 160000.0
+    },
+    "document.amounts.VAT.amount": {
+        "original": 25000.0,
+        "copy": 26666.67
+    },
+    "document.contract_details.contract_number": {
+        "original": "12345",
+        "copy": "54321"
+    },
+    "document.contract_details.price": {
+        "original": "150000.00 RUB",
+        "copy": "160000.00 RUB"
+    },
+    "document.contract_details.delivery_terms": {
+        "original": "Доставка осуществляется до 15.10.2023",
+        "copy": "Доставка осуществляется до 20.10.2023"
+    },
+    "document.contract_details.volume": {
+        "original": "100 единиц",
+        "copy": "120 единиц"
+    },
+    "document.signatories.1.name": {
+        "original": "Петров Петр Петрович",
+        "copy": "Сидоров Сидор Сидорович"
+    },
+    "document.signatories.1.proxy_number": {
+        "original": "456 от 01.09.2023",
+        "copy": "789 от 01.09.2023"
+    },
+    "document.pagination.total_pages": {
+        "original": 5,
+        "copy": 6
+    }
+}
