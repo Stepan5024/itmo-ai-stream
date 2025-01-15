@@ -21,7 +21,7 @@ class Bot(commands.Bot):
         # Сохраняем сообщение в таблицу row_comments
         save_message(message)
 
-        # Обрабатываем команды (если нужно)
+        # Обрабатываем команды
         await self.handle_commands(message)
 
     @commands.command()
